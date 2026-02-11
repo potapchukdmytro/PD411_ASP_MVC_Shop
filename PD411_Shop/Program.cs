@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PD411_Shop.Data;
+using PD411_Shop.Data.Initalizer;
+using PD411_Shop.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     string connectionString = "Server=localhost;Database=PD411_MVC_SHOP;Trusted_Connection=True;TrustServerCertificate=True;";
     options.UseSqlServer(connectionString);
 });
+
+// DI наш≥ класи
+// builder.Services.AddSingleton(); // патерн Singleton - об'Їкт класу буде ≥снувати в Їдиному екзепл€р≥
+// builder.Services.AddTransient(); // об'Їкт класу буде створюватис€ при кожному використанн≥
+builder.Services.AddScoped<ProductRepostitory>(); // об'Їкт класу буде створюватис€ при запит≥ та видал€ти п≥сл€ його завершенн€
 
 var app = builder.Build();
 
@@ -34,5 +41,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
+Seeder.Seed(app);
 
 app.Run();
