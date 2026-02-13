@@ -10,6 +10,11 @@
                 <th>Color</th>
                 <th>CreatedDate</th>
                 <th>Image</th>
+                <th>
+                    <a asp-action="Create" asp-controller="Product" style="color: white">
+                        <i class="bi bi-plus-circle-dotted"></i>
+                    </a>
+                </th>
             </tr>
 
         </thead>
@@ -23,7 +28,13 @@
                     <td>@product.Color</td>
                     <td>@product.CreatedDate.ToString("dd.MM.yyyy")</td>
                     <td>
-                        <img height="100px" src="https://allmaster.com.ua/images/Stati/zapchasti-dlya-kompyutera-na-allmaster.jpg" alt="@product.Name">
+                        @* ~  шлях до папки wwwroot *@
+                        <img height="100" src="~/images/@(product.Image ?? "default.jpg")" alt="@product.Name">
+                    </td>
+                    <td>
+                        <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id">
+                            <i class="bi bi-trash-fill" style="color: red"></i>
+                        </a>
                     </td>
                 </tr>
             }

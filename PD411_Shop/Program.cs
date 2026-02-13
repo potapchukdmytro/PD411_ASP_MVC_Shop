@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();
 // DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    string connectionString = "Server=localhost;Database=PD411_MVC_SHOP;Trusted_Connection=True;TrustServerCertificate=True;";
+    string? connectionString = builder.Configuration.GetConnectionString("LocalDb");
     options.UseSqlServer(connectionString);
 });
 
