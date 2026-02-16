@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PD411_Shop.Data;
 using PD411_Shop.Models;
@@ -15,6 +16,26 @@ namespace PD411_Shop.Controllers
             _context = context;
         }
 
+        private async Task<IEnumerable<SelectListItem>> GetSelectCategoriesAsync()
+        {
+            List<CategoryModel> categories = await _context.Categories.ToListAsync();
+
+            IEnumerable<SelectListItem> selectItems = categories
+                .Select(c => new SelectListItem(c.Name, c.Id.ToString()));
+
+
+            //List<SelectListItem> result = new List<SelectListItem>();
+            //foreach (var c in categories)
+            //{
+            //    var item = new SelectListItem(c.Name, c.Id.ToString();
+            //    result.Add(item);
+            //}
+
+            //return result;
+
+            return selectItems;
+        }
+
         public IActionResult Index()
         {
             var products = _context.Products.AsEnumerable();
@@ -26,18 +47,24 @@ namespace PD411_Shop.Controllers
         // GET
         public async Task<IActionResult> Create()
         {
-            return View();
+            var viewModel = new CreateProductVM
+            {
+                SelectCategories = await GetSelectCategoriesAsync()
+            };
+
+            return View(viewModel);
         }
 
         // POST
         // [FromForm] - очікує дані у форматі multipart/form-data
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromForm]CreateProductVM vm)
         {
-            var category = _context.Categories.FirstOrDefault();
-            if (category == null)
+            if(!ModelState.IsValid)
             {
-                return View();
+                vm.SelectCategories = await GetSelectCategoriesAsync();
+                return View(vm);
             }
 
             ProductModel model = new ProductModel
@@ -47,7 +74,7 @@ namespace PD411_Shop.Controllers
                 Color = vm.Color,
                 Description = vm.Description,
                 Price = vm.Price,
-                Category = category
+                CategoryId = vm.CategoryId
             };
 
             // Save Image
