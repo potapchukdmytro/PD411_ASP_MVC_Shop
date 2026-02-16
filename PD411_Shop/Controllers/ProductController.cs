@@ -24,6 +24,7 @@ namespace PD411_Shop.Controllers
                 .Select(c => new SelectListItem(c.Name, c.Id.ToString()));
 
 
+            // Приклад того самого коду без використання Select
             //List<SelectListItem> result = new List<SelectListItem>();
             //foreach (var c in categories)
             //{
@@ -31,14 +32,15 @@ namespace PD411_Shop.Controllers
             //    result.Add(item);
             //}
 
-            //return result;
-
             return selectItems;
         }
 
         public IActionResult Index()
         {
-            var products = _context.Products.AsEnumerable();
+            var products = _context.Products
+                .Include(p => p.Category)
+                .AsNoTracking()
+                .AsEnumerable();
 
             return View(products);
         }

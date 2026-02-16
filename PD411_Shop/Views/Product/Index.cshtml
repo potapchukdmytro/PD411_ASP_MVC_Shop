@@ -5,11 +5,12 @@
         <thead class="table-dark">
             <tr>
                 <th>Id</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Color</th>
-                <th>CreatedDate</th>
-                <th>Image</th>
+                <th>Назва</th>
+                <th>Ціна</th>
+                <th>Колір</th>
+                <th>Категорія</th>
+                <th>Дата створення</th>
+                <th>Зображення</th>
                 <th>
                     <a asp-action="Create" asp-controller="Product" style="color: white">
                         <i class="bi bi-plus-circle-dotted"></i>
@@ -26,6 +27,7 @@
                     <td>@product.Name</td>
                     <td>@product.Price</td>
                     <td>@product.Color</td>
+                    <td>@product.Category!.Name</td>
                     <td>@product.CreatedDate.ToString("dd.MM.yyyy")</td>
                     <td>
                         @* ~  шлях до папки wwwroot *@
