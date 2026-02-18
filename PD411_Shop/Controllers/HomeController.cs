@@ -20,9 +20,9 @@ namespace PD411_Shop.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int? category)
+        public IActionResult Index(int? category, [FromQuery] PaginationVM pagination)
         {
-            List<CategoryModel> categories = _context.Categories.ToList();
+            IQueryable<CategoryModel> categories = _context.Categories;
             IQueryable<ProductModel> products = _context.Products;
 
             if (category != null && categories.Any(c => c.Id == category))
@@ -30,10 +30,22 @@ namespace PD411_Shop.Controllers
                 products = products.Where(p => p.CategoryId == category);
             }
 
+            // Pagination
+            pagination.PageSize = pagination.PageSize < 1 ? 20 : pagination.PageSize;
+            pagination.PageCount = (int)Math.Ceiling((double)products.Count() / pagination.PageSize);
+            pagination.Page = pagination.Page < 1 || pagination.Page > pagination.PageCount ? 1 : pagination.Page;
+
+            products = products
+                .OrderBy(p => p.Id)
+                .Skip(pagination.PageSize * (pagination.Page - 1))
+                .Take(pagination.PageSize);
+
             var homeVm = new HomeVM
             {
                 Products = products,
-                Categories = categories
+                Categories = categories,
+                Pagination = pagination,
+                CategoryId = category
             };
 
             return View(homeVm);

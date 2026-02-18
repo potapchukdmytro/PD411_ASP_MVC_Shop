@@ -1,4 +1,6 @@
-﻿namespace PD411_Shop.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace PD411_Shop.Models
 {
     public class ProductModel
     {
