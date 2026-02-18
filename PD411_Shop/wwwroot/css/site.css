@@ -34,3 +34,13 @@ body {
     transform: scale(1.5);
     transition: transform 0.1s ease;
 }
+
+.side-link {
+    text-decoration: none;
+    color: black;
+}
+
+    .side-link:hover {
+        color: dimgray;
+        cursor: pointer;
+    }

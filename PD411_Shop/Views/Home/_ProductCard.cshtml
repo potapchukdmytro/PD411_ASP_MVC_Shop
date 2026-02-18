@@ -1,0 +1,10 @@
+﻿@model ProductModel
+
+<div class="card col-3" style="width: 18rem;">
+    <img height="300" width="250" style="object-fit: contain;" class="card-img-top" src="~/images/@(Model.Image ?? "default.jpg")" alt="@Model.Name">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <h4>$@Model.Price</h4>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+</div>

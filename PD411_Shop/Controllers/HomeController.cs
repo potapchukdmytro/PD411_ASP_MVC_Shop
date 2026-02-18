@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using PD411_Shop.Data;
 using PD411_Shop.Models;
 using PD411_Shop.Repositories;
+using PD411_Shop.ViewModels;
+using System.Collections;
 using System.Diagnostics;
 
 namespace PD411_Shop.Controllers
@@ -18,11 +20,23 @@ namespace PD411_Shop.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? category)
         {
-            IEnumerable<ProductModel> products = _context.Products.AsEnumerable();
+            List<CategoryModel> categories = _context.Categories.ToList();
+            IQueryable<ProductModel> products = _context.Products;
 
-            return View(products);
+            if (category != null && categories.Any(c => c.Id == category))
+            {
+                products = products.Where(p => p.CategoryId == category);
+            }
+
+            var homeVm = new HomeVM
+            {
+                Products = products,
+                Categories = categories
+            };
+
+            return View(homeVm);
         }
 
         public IActionResult Privacy()
