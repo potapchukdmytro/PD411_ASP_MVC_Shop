@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PD411_Shop.Data;
 using PD411_Shop.Data.Initalizer;
+using PD411_Shop.Models;
 using PD411_Shop.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,10 +17,25 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString);
 });
 
-// DI наші класи
-// builder.Services.AddSingleton(); // патерн Singleton - об'єкт класу буде існувати в єдиному екзеплярі
-// builder.Services.AddTransient(); // об'єкт класу буде створюватися при кожному використанні
-builder.Services.AddScoped<ProductRepostitory>(); // об'єкт класу буде створюватися при запиті та видаляти після його завершення
+// Identity
+builder.Services.AddIdentity<UserModel, IdentityRole>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+
+    options.Password.RequiredLength = 6;
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+})
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders()
+    .AddDefaultUI();
+
+// DI пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+// builder.Services.AddSingleton(); // пїЅпїЅпїЅпїЅпїЅпїЅ Singleton - пїЅпїЅ'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+// builder.Services.AddTransient(); // пїЅпїЅ'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+builder.Services.AddScoped<ProductRepostitory>(); // пїЅпїЅ'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 var app = builder.Build();
 
@@ -33,7 +50,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapRazorPages();
 
 app.MapStaticAssets();
 

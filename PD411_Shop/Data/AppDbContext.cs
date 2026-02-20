@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PD411_Shop.Models;
 
 namespace PD411_Shop.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<UserModel>
     {
         public AppDbContext(DbContextOptions options)
             : base(options)
