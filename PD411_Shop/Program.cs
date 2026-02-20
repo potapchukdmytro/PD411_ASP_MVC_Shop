@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using PD411_Shop.Data;
 using PD411_Shop.Data.Initalizer;
 using PD411_Shop.Models;
 using PD411_Shop.Repositories;
+using PD411_Shop.Services;
+using PD411_Shop.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +39,13 @@ builder.Services.AddIdentity<UserModel, IdentityRole>(options =>
 // builder.Services.AddSingleton(); // ������ Singleton - ��'��� ����� ���� �������� � ������� ��������
 // builder.Services.AddTransient(); // ��'��� ����� ���� ������������ ��� ������� ������������
 builder.Services.AddScoped<ProductRepostitory>(); // ��'��� ����� ���� ������������ ��� ����� �� �������� ���� ���� ����������
+
+// Add services
+builder.Services.AddScoped<IEmailSender, EmailService>();
+
+// Add options
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
 var app = builder.Build();
 
