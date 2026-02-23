@@ -4,6 +4,6 @@
     {
         public int Page { get; set; } = 1;
         public int PageCount { get; set; } = 1;
-        public int PageSize { get; set; } = 4;
+        public int PageSize { get; set; } = 20;
     }
 }
