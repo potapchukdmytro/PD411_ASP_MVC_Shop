@@ -6,39 +6,14 @@ using PD411_Shop.ViewModels;
 namespace PD411_Shop.Repositories
 {
     public class ProductRepository
+        : GenericRepository<ProductModel>
     {
         private readonly AppDbContext _context;
 
         public ProductRepository(AppDbContext context)
+            : base(context)
         {
             _context = context;
-        }
-
-        public async Task<ProductModel?> GetByIdAsync(int id)
-        {
-            return await _context.Products.FindAsync(id);
-        }
-
-        public async Task CreateAsync(ProductModel model)
-        {
-            await _context.Products.AddAsync(model);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(ProductModel model)
-        {
-            _context.Products.Update(model);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var model = await GetByIdAsync(id);
-            if(model != null)
-            {
-                _context.Products.Remove(model);
-                await _context.SaveChangesAsync();
-            }
         }
 
         public async Task<List<ProductModel>> GetAllAsync(PaginationVM pagination, int? category = null)

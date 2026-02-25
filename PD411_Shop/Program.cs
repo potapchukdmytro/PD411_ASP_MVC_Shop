@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using PD411_Shop;
 using PD411_Shop.Data;
 using PD411_Shop.Data.Initalizer;
 using PD411_Shop.Models;
