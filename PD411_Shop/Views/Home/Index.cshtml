@@ -8,16 +8,19 @@
         @foreach (var category in Model.Categories)
         {
             <a asp-action="Index" asp-route-category="@category.Id" class="d-block mb-2 side-link">
+                <i class="bi @category.Icon mx-1"></i>
                 @category.Name
             </a>
         }
     </aside>
 
     <main class="flex-grow-1 px-5 pt-5">
-        <div class="row gap-2 mx-auto">
+        <div class="row">
             @foreach (var product in Model.Products)
             {
-                <partial name="_ProductCard" model="@product" />
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 p-1">
+                    <partial name="_ProductCard" model="@product" />
+                </div>
             }
         </div>
         <div class="d-flex justify-content-center mt-5">
