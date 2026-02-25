@@ -44,10 +44,13 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// DI пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
-// builder.Services.AddSingleton(); // пїЅпїЅпїЅпїЅпїЅпїЅ Singleton - пїЅпїЅ'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
-// builder.Services.AddTransient(); // пїЅпїЅ'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
-builder.Services.AddScoped<ProductRepostitory>(); // пїЅпїЅ'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+// DI налаштування
+// builder.Services.AddSingleton(); // патерн singleton - об'єкт існує в єдиному екземплярі на весь час роботи програми, створюється при першому запиті і використовується повторно для всіх наступних запитів
+// builder.Services.AddTransient(); // патерн transient - об'єкт створюється кожного разу при запиті, не зберігається між запитами, використовується для легковагих сервісів, які не мають стану
+// builder.Services.AddScoped(); // патерн scoped - об'єкт створюється один раз на кожен HTTP-запит, зберігається протягом всього запиту, використовується для сервісів, які мають стан, пов'язаний з конкретним запитом
+builder.Services.AddScoped<ProductRepository>();
+builder.Services.AddScoped<CategoryRepository>();
+builder.Services.AddScoped<ImageService>();
 
 // Add services
 builder.Services.AddScoped<IEmailSender, EmailService>();

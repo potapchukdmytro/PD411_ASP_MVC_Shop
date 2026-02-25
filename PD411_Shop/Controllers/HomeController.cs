@@ -1,50 +1,32 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PD411_Shop.Data;
 using PD411_Shop.Models;
 using PD411_Shop.Repositories;
-using PD411_Shop.Services;
 using PD411_Shop.ViewModels;
-using System.Collections;
 using System.Diagnostics;
-using System.Text.Json;
 
 namespace PD411_Shop.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly AppDbContext _context;
+        private readonly ProductRepository _productRepository;
+        private readonly CategoryRepository _categoryRepository;
 
-        public HomeController(ILogger<HomeController> logger, AppDbContext context)
+        public HomeController(ILogger<HomeController> logger, ProductRepository productRepository, CategoryRepository categoryRepository)
         {
             _logger = logger;
-            _context = context;
+            _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
         }
 
-        public IActionResult Index(int? category, [FromQuery] PaginationVM pagination)
+        public async Task<IActionResult> Index(int? category, [FromQuery] PaginationVM pagination)
         {
-            IQueryable<CategoryModel> categories = _context.Categories;
-            IQueryable<ProductModel> products = _context.Products;
-
-            if (category != null && categories.Any(c => c.Id == category))
-            {
-                products = products.Where(p => p.CategoryId == category);
-            }
-
-            // Pagination
-            pagination.PageSize = pagination.PageSize < 1 ? 20 : pagination.PageSize;
-            pagination.PageCount = (int)Math.Ceiling((double)products.Count() / pagination.PageSize);
-            pagination.Page = pagination.Page < 1 || pagination.Page > pagination.PageCount ? 1 : pagination.Page;
-
-            products = products
-                .OrderBy(p => p.Id)
-                .Skip(pagination.PageSize * (pagination.Page - 1))
-                .Take(pagination.PageSize);
+            var categories = await _categoryRepository.GetAllAsync();
 
             var homeVm = new HomeVM
             {
-                Products = products,
+                Products = await _productRepository.GetAllAsync(pagination, category),
                 Categories = categories,
                 Pagination = pagination,
                 CategoryId = category
@@ -60,7 +42,7 @@ namespace PD411_Shop.Controllers
 
         public IActionResult AboutUs()
         {
-            return View(); 
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
