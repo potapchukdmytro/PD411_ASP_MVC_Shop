@@ -34,7 +34,10 @@
                         <img class="image-scale" height="50" src="~/images/@(product.Image != null ? $"{PathSettings.Products}/{product.Image}" : "default.jpg")" alt="@product.Name">
                     </td>
                     <td>
-                        <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id">
+                        <a class="text-decoration-none" asp-controller="Product" asp-action="Update" asp-route-id="@product.Id">
+                            <i class="bi bi-pencil-fill text-success"></i>
+                        </a>
+                        <a class="text-decoration-none" asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id">
                             <i class="bi bi-trash-fill" style="color: red"></i>
                         </a>
                     </td>

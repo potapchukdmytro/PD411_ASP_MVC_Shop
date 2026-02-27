@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using PD411_Shop.Models;
-
-namespace PD411_Shop.ViewModels
+﻿namespace PD411_Shop.ViewModels
 {
     public class CartItemVM
     {
