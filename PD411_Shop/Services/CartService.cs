@@ -15,6 +15,11 @@ namespace PD411_Shop.Services
             }
         }
 
+        public static IEnumerable<CartItemVM> GetItems(ISession session)
+        {
+            var items = session.Get<IEnumerable<CartItemVM>>();
+            return items ?? new List<CartItemVM>();
+        }
         public static void RemoveFromCart(ISession session, int productId)
         {
             var items = session.Get<List<CartItemVM>>() ?? new List<CartItemVM>();
